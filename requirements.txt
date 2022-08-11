@@ -1,0 +1,19 @@
+# -- Required Libraries and Versions --
+pandas >= 1.4.3
+numpy >= 1.23.1
+random >=
+datetime >=
+os >=
+base64 >=
+glob >=
+re >=
+json >=
+time >=
+requests >= 2.28.1
+urllib >=
+newspaper3k >= 0.2.8
+fuzzywuzzy >= 0.18.0
+beautifulsoup4 >= 4.11.1
+string >=
+nltk >= 3.7
+collections >=
