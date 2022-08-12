@@ -17,3 +17,4 @@ beautifulsoup4 >= 4.11.1
 string >=
 nltk >= 3.7
 collections >=
+xlsxwriter >= 3.0.3
