@@ -426,7 +426,7 @@ preliminarData.head(3)
 
 # **-- CONTENT EXTRACTION: CRAWLING PROCESS --**
 #Diffbot API
-user = 'katia.bedolla@porternovelli.mx'
+user =      'katia.bedolla@porternovelli.mx'
 API_TOKEN = '7a7668b8111a6e4d5750c12a8c93b56d'
 
 class DiffbotClient(object):
@@ -482,7 +482,6 @@ def get_content_diffbot(url):
     except:
         return "Something went wrong with url"
 
-
 user_agent_list = [
    #Chrome
      'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:96.0) Gecko/20100101 Firefox/96.0',
@@ -517,12 +516,9 @@ user_agent_list = [
 def get_content_news(url): 
       user_agent = random.choice(user_agent_list)
       config = Config()
-
       config.browser_user_agent = user_agent
-
+      time.sleep(.05)  
       a  =  Article(url, config=config)
-      time.sleep(1)  
-
       try:
            a.download()
            a.parse()
@@ -531,46 +527,37 @@ def get_content_news(url):
            if type(paragraphs)==str and  len(paragraphs) >0:
                   print("URL Content from {} is correct".format(url))
                   return paragraphs
+                  #return paragraphs
            elif paragraphs == '' or  type(paragraphs) == newspaper.article.ArticleException:
                  ext_diff= get_content_diffbot(url) 
                  print("URL Content from {} is correct from diffbot".format(url))
-
                  return ext_diff
       except Exception as exce:
-            
              print("URL Content from {} is OtherError".format(url))
              try:
                  ext_diff= get_content_diffbot(url)
                  print("URL Content from {} is correct from diffbot".format(url))
-
                  return ext_diff
              except: 
-                     print("URL Content from {} is OtherError".format(url))
-
+                 print("URL Content from {} is OtherError".format(url))
 
 start = time.time()
-for index,row in preliminarData.iterrows():   
-     
-    if (row['Source'] == 'CIMS'):
-
-        preliminarData.at[index, 'Mention Content'] =  get_content_news(row['Mention URL'])
+for index, row in preliminarData.iterrows():
+    if row['Source'] == 'GN':
+        continue
+    elif row['Source'] == 'CIMS':
+        preliminarData.loc[index, 'Mention Content'] = get_content_news(row['Mention URL'])
         print(index)
-
-    elif (row['Source'] == 'Synthesio'):
-        
-        content_syn =  get_content_news(row['Mention URL'])
-        
-    elif (row['Source'] == 'Subs'):
-        content_syn = get_content_news(row['Mention URL'])
-
-        if (content_syn =="No Content") or (content_syn =="Empty URL, Nothing found") or (content_syn =="Something went wrong with url"):
-            
-                    preliminarData.at[index, 'Mention Content'] = row['Mention Content']
-        else:
-                    preliminarData.at[index, 'Mention Content'] = content_syn
-                    print(index)
+    elif preliminarData['Source'] == 'Synthesio':
+        preliminarData.loc[index, 'Mention Content'] = get_content_news(row['Mention URL'])
+        print(index)
+    elif preliminarData['Source'] == 'Subs':
+        preliminarData.iloc[index, 'Mention Content'] = get_content_news(row['Mention URL'])
+        print(index)
+    else:
+        pass
 end = time.time()
-print(start-end)
+print(f'Process completed. The execution time was: {end-start}')
 
 # **-- CHECK POINT:**
 '''
