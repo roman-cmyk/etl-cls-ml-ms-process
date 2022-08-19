@@ -35,6 +35,8 @@ import glob
 import json
 import time
 import requests
+import sys
+import pyodbc
 import re
 import urllib.request, sys, time
 import newspaper
@@ -409,6 +411,20 @@ preliminarData.head(3)
 
 
 # **-- PUSH TO DATATABLES (RAW DATA) --**
+
+# Set server credentials
+DRIVER = "SQL SERVER"
+SERVER_NAME = "roman\LOCALDB#6CC21627"
+DATABASE_NAME = "cims_raw_data"
+
+conn_string = f"""
+    Driver={{{DRIVER}}};
+    Server={SERVER_NAME};
+    Database={DATABASE_NAME};
+    Trusted_Connection=yes;
+    Uid= roman;
+    password= Pending;
+"""
 
     # -- BigQuery Table: CIMS --
 

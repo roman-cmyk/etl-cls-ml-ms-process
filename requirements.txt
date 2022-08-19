@@ -19,3 +19,4 @@ nltk >= 3.7
 collections >=
 xlsxwriter >= 3.0.3
 jenkins >= 1.7.0
+pyodbc >= 4.0.34
